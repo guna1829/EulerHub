@@ -353,7 +353,7 @@ function AdminProblemPanel({ userRole, isAuthenticated, onLogout, onSolveProblem
                                     <div className="col" key={problem._id}>
                                         <div className="card card-themed h-100 shadow-sm rounded-3 border-secondary">
                                             <div className="card-body d-flex flex-column">
-                                                <h5 className="card-title text fw-bold mb-2">{problem.title}</h5>
+                                                <h5 className="card-title text fw-bold mb-2" >{problem.title}</h5>
                                                 <div className="d-flex align-items-center mb-3">
                                                     <span className={`badge rounded-pill me-2 ${
                                                         problem.difficulty === 'Easy' ? 'bg-success' :
@@ -417,62 +417,137 @@ function AdminProblemPanel({ userRole, isAuthenticated, onLogout, onSolveProblem
                     </div>
                 </div>
 
-                {/* Problem Create/Edit Modal (Admin Only) */}
+                {/* Problem Create/Edit Modal (Admin Only) - FIXED STYLING */}
                 {isModalOpen && isAdmin && (
-                    <div className="modal d-block fade show" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.8)' }}>
+                    <div className="modal d-block fade show" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.9)', zIndex: 1050 }}>
                         <div className="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-                            <div className="modal-content card-themed shadow-lg rounded-4 border-secondary">
-                                <div className="modal-header bg-dark text-white rounded-top-4 border-secondary">
-                                    <h5 className="modal-title fw-bold" style={{ color: 'var(--primary-accent)' }}>{formMode === 'create' ? 'Create New Problem' : 'Edit Problem'}</h5>
+                            <div className="modal-content" style={{ backgroundColor: '#2c3e50', color: '#fff', border: '1px solid #4a5568' }}>
+                                <div className="modal-header" style={{ backgroundColor: '#1a202c', borderBottom: '1px solid #4a5568' }}>
+                                    <h5 className="modal-title fw-bold" style={{ color: '#63b3ed' }}>
+                                        {formMode === 'create' ? 'Create New Problem' : 'Edit Problem'}
+                                    </h5>
                                     <button type="button" className="btn-close btn-close-white" onClick={closeAllModals} aria-label="Close"></button>
                                 </div>
                                 <form onSubmit={handleProblemSubmit}>
-                                    <div className="modal-body row g-3 p-4" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+                                    <div className="modal-body row g-3 p-4" style={{ maxHeight: '70vh', overflowY: 'auto', backgroundColor: '#2c3e50' }}>
                                         <div className="col-md-6">
-                                            <label htmlFor="title" className="form-label text-light fw-semibold">Title</label>
-                                            <input type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)} className="form-control form-control-lg form-control-themed rounded-pill" required />
+                                            <label htmlFor="title" className="form-label fw-semibold" style={{ color: '#e2e8f0' }}>Title</label>
+                                            <input 
+                                                type="text" 
+                                                id="title" 
+                                                value={title} 
+                                                onChange={(e) => setTitle(e.target.value)} 
+                                                className="form-control form-control-lg rounded-pill" 
+                                                style={{ backgroundColor: '#1a202c', color: '#fff', border: '1px solid #4a5568' }}
+                                                required 
+                                            />
                                         </div>
                                         <div className="col-md-6">
-                                            <label htmlFor="difficulty" className="form-label text-light fw-semibold">Difficulty</label>
-                                            <select id="difficulty" value={difficulty} onChange={(e) => setDifficulty(e.target.value)} className="form-select form-select-lg form-select-themed rounded-pill" required>
+                                            <label htmlFor="difficulty" className="form-label fw-semibold" style={{ color: '#e2e8f0' }}>Difficulty</label>
+                                            <select 
+                                                id="difficulty" 
+                                                value={difficulty} 
+                                                onChange={(e) => setDifficulty(e.target.value)} 
+                                                className="form-select form-select-lg rounded-pill" 
+                                                style={{ backgroundColor: '#1a202c', color: '#fff', border: '1px solid #4a5568' }}
+                                                required
+                                            >
                                                 <option value="Easy">Easy</option>
                                                 <option value="Medium">Medium</option>
                                                 <option value="Hard">Hard</option>
                                             </select>
                                         </div>
                                         <div className="col-12">
-                                            <label htmlFor="statement" className="form-label text-light fw-semibold">Problem Statement</label>
-                                            <textarea id="statement" value={statement} onChange={(e) => setStatement(e.target.value)} rows="5" className="form-control form-control-themed rounded-3" required></textarea>
+                                            <label htmlFor="statement" className="form-label fw-semibold" style={{ color: '#e2e8f0' }}>Problem Statement</label>
+                                            <textarea 
+                                                id="statement" 
+                                                value={statement} 
+                                                onChange={(e) => setStatement(e.target.value)} 
+                                                rows="5" 
+                                                className="form-control rounded-3" 
+                                                style={{ backgroundColor: '#1a202c', color: '#fff', border: '1px solid #4a5568' }}
+                                                required
+                                            ></textarea>
                                         </div>
                                         <div className="col-md-6">
-                                            <label htmlFor="input" className="form-label text-light fw-semibold">Input Format</label>
-                                            <textarea id="input" value={input} onChange={(e) => setInput(e.target.value)} rows="3" className="form-control form-control-themed rounded-3" required></textarea>
+                                            <label htmlFor="input" className="form-label fw-semibold" style={{ color: '#e2e8f0' }}>Input Format</label>
+                                            <textarea 
+                                                id="input" 
+                                                value={input} 
+                                                onChange={(e) => setInput(e.target.value)} 
+                                                rows="3" 
+                                                className="form-control rounded-3" 
+                                                style={{ backgroundColor: '#1a202c', color: '#fff', border: '1px solid #4a5568' }}
+                                                required
+                                            ></textarea>
                                         </div>
                                         <div className="col-md-6">
-                                            <label htmlFor="output" className="form-label text-light fw-semibold">Output Format</label>
-                                            <textarea id="output" value={output} onChange={(e) => setOutput(e.target.value)} rows="3" className="form-control form-control-themed rounded-3" required></textarea>
+                                            <label htmlFor="output" className="form-label fw-semibold" style={{ color: '#e2e8f0' }}>Output Format</label>
+                                            <textarea 
+                                                id="output" 
+                                                value={output} 
+                                                onChange={(e) => setOutput(e.target.value)} 
+                                                rows="3" 
+                                                className="form-control rounded-3" 
+                                                style={{ backgroundColor: '#1a202c', color: '#fff', border: '1px solid #4a5568' }}
+                                                required
+                                            ></textarea>
                                         </div>
                                         <div className="col-12">
-                                            <label htmlFor="constraints" className="form-label text-light fw-semibold">Constraints</label>
-                                            <textarea id="constraints" value={constraints} onChange={(e) => setConstraints(e.target.value)} rows="3" className="form-control form-control-themed rounded-3" required></textarea>
+                                            <label htmlFor="constraints" className="form-label fw-semibold" style={{ color: '#e2e8f0' }}>Constraints</label>
+                                            <textarea 
+                                                id="constraints" 
+                                                value={constraints} 
+                                                onChange={(e) => setConstraints(e.target.value)} 
+                                                rows="3" 
+                                                className="form-control rounded-3" 
+                                                style={{ backgroundColor: '#1a202c', color: '#fff', border: '1px solid #4a5568' }}
+                                                required
+                                            ></textarea>
                                         </div>
                                         <div className="col-md-6">
-                                            <label htmlFor="timeLimit" className="form-label text-light fw-semibold">Time Limit (seconds)</label>
-                                            <input type="number" id="timeLimit" value={timeLimit} onChange={(e) => setTimeLimit(e.target.value)} className="form-control form-control-lg form-control-themed rounded-pill" required min="1" />
+                                            <label htmlFor="timeLimit" className="form-label fw-semibold" style={{ color: '#e2e8f0' }}>Time Limit (seconds)</label>
+                                            <input 
+                                                type="number" 
+                                                id="timeLimit" 
+                                                value={timeLimit} 
+                                                onChange={(e) => setTimeLimit(e.target.value)} 
+                                                className="form-control form-control-lg rounded-pill" 
+                                                style={{ backgroundColor: '#1a202c', color: '#fff', border: '1px solid #4a5568' }}
+                                                required 
+                                                min="1" 
+                                            />
                                         </div>
                                         <div className="col-md-6">
-                                            <label htmlFor="memoryLimit" className="form-label text-light fw-semibold">Memory Limit (MB)</label>
-                                            <input type="number" id="memoryLimit" value={memoryLimit} onChange={(e) => setMemoryLimit(e.target.value)} className="form-control form-control-lg form-control-themed rounded-pill" required min="1" />
+                                            <label htmlFor="memoryLimit" className="form-label fw-semibold" style={{ color: '#e2e8f0' }}>Memory Limit (MB)</label>
+                                            <input 
+                                                type="number" 
+                                                id="memoryLimit" 
+                                                value={memoryLimit} 
+                                                onChange={(e) => setMemoryLimit(e.target.value)} 
+                                                className="form-control form-control-lg rounded-pill" 
+                                                style={{ backgroundColor: '#1a202c', color: '#fff', border: '1px solid #4a5568' }}
+                                                required 
+                                                min="1" 
+                                            />
                                         </div>
                                         <div className="col-12">
-                                            <label htmlFor="tags" className="form-label text-light fw-semibold">Tags (comma-separated)</label>
-                                            <input type="text" id="tags" value={tags} onChange={(e) => setTags(e.target.value)} className="form-control form-control-lg form-control-themed rounded-pill" placeholder="e.g., Array, DP, Graph" />
+                                            <label htmlFor="tags" className="form-label fw-semibold" style={{ color: '#e2e8f0' }}>Tags (comma-separated)</label>
+                                            <input 
+                                                type="text" 
+                                                id="tags" 
+                                                value={tags} 
+                                                onChange={(e) => setTags(e.target.value)} 
+                                                className="form-control form-control-lg rounded-pill" 
+                                                style={{ backgroundColor: '#1a202c', color: '#fff', border: '1px solid #4a5568' }}
+                                                placeholder="e.g., Array, DP, Graph" 
+                                            />
                                         </div>
 
-                                        {/* Test Cases Section within Problem Edit Modal */}
+                                        {/* Test Cases Section within Problem Edit Modal - FIXED STYLING AND SCROLLING */}
                                         {formMode === 'edit' && currentProblem && (
                                             <div className="col-12 mt-5">
-                                                <h4 className="mb-3 d-flex align-items-center text-info">
+                                                <h4 className="mb-3 d-flex align-items-center" style={{ color: '#63b3ed' }}>
                                                     <FlaskConical size={24} className="me-2" /> Test Cases for "{currentProblem.title}"
                                                 </h4>
                                                 <div className="d-flex justify-content-end mb-3">
@@ -481,37 +556,114 @@ function AdminProblemPanel({ userRole, isAuthenticated, onLogout, onSolveProblem
                                                     </button>
                                                 </div>
                                                 {testCases.length === 0 ? (
-                                                    <div className="alert alert-secondary text-center card-themed text-muted border-secondary rounded-3" role="alert">No test cases found for this problem.</div>
+                                                    <div className="alert text-center p-4" style={{ backgroundColor: '#4a5568', color: '#e2e8f0', border: '1px solid #63b3ed' }} role="alert">
+                                                        No test cases found for this problem.
+                                                    </div>
                                                 ) : (
-                                                    <div className="table-responsive">
-                                                        <table className="table table-sm table-bordered table-hover align-middle table-themed">
-                                                            <thead className="table-secondary">
+                                                    <div className="table-responsive rounded-3 border" style={{ maxHeight: '400px', overflowY: 'auto', border: '2px solid #4fd1c7', boxShadow: '0 4px 12px rgba(79, 209, 199, 0.2)' }}>
+                                                        <table className="table table-sm table-bordered table-hover align-middle mb-0" style={{ backgroundColor: '#0f1419', color: '#fff' }}>
+                                                            <thead style={{ backgroundColor: 'linear-gradient(135deg, #4fd1c7, #38b2ac)', position: 'sticky', top: 0, zIndex: 1 }}>
                                                                 <tr>
-                                                                    <th className="text-white">#</th>
-                                                                    <th className="text-white">Input</th>
-                                                                    <th className="text-white">Output</th>
-                                                                    <th className="text-white">Hidden</th>
-                                                                    <th className="text-white">Points</th>
-                                                                    <th className="text-white">Actions</th>
+                                                                    <th style={{ color: '#0a0e27', fontWeight: 'bold', background: 'linear-gradient(135deg, #4fd1c7, #38b2ac)', border: '1px solid #2dd4bf' }}>#</th>
+                                                                    <th style={{ color: '#0a0e27', fontWeight: 'bold', background: 'linear-gradient(135deg, #4fd1c7, #38b2ac)', border: '1px solid #2dd4bf' }}>Input</th>
+                                                                    <th style={{ color: '#0a0e27', fontWeight: 'bold', background: 'linear-gradient(135deg, #4fd1c7, #38b2ac)', border: '1px solid #2dd4bf' }}>Expected Output</th>
+                                                                    <th style={{ color: '#0a0e27', fontWeight: 'bold', background: 'linear-gradient(135deg, #4fd1c7, #38b2ac)', border: '1px solid #2dd4bf' }}>Visibility</th>
+                                                                    <th style={{ color: '#0a0e27', fontWeight: 'bold', background: 'linear-gradient(135deg, #4fd1c7, #38b2ac)', border: '1px solid #2dd4bf' }}>Points</th>
+                                                                    <th style={{ color: '#0a0e27', fontWeight: 'bold', background: 'linear-gradient(135deg, #4fd1c7, #38b2ac)', border: '1px solid #2dd4bf' }}>Actions</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 {testCases.map((tc, index) => (
-                                                                    <tr key={tc._id}>
-                                                                        <td className="text-light">{index + 1}</td>
-                                                                        <td><pre className="mb-0 small bg-dark p-1 rounded border border-secondary text-light">{tc.input}</pre></td>
-                                                                        <td><pre className="mb-0 small bg-dark p-1 rounded border border-secondary text-light">{tc.output}</pre></td>
-                                                                        <td>
-                                                                            {tc.isHidden ? <XCircle size={20} className="text-danger" /> : <CheckCircle size={20} className="text-success" />}
+                                                                    <tr key={tc._id} style={{ 
+                                                                        backgroundColor: index % 2 === 0 ? '#1a2332' : '#243447', 
+                                                                        borderColor: '#4fd1c7',
+                                                                        transition: 'all 0.3s ease' 
+                                                                    }}
+                                                                    onMouseEnter={(e) => e.target.closest('tr').style.backgroundColor = '#2a4a5c'}
+                                                                    onMouseLeave={(e) => e.target.closest('tr').style.backgroundColor = index % 2 === 0 ? '#1a2332' : '#243447'}
+                                                                    >
+                                                                        <td style={{ color: '#4fd1c7', fontWeight: 'bold', border: '1px solid #2dd4bf' }}>{index + 1}</td>
+                                                                        <td style={{ border: '1px solid #2dd4bf' }}>
+                                                                            <pre className="mb-0 small p-2 rounded" style={{ 
+                                                                                backgroundColor: '#0f1922', 
+                                                                                border: '2px solid #22d3ee', 
+                                                                                color: '#a5f3fc', 
+                                                                                maxWidth: '200px', 
+                                                                                overflow: 'auto',
+                                                                                boxShadow: '0 2px 8px rgba(34, 211, 238, 0.3)'
+                                                                            }}>{tc.input}</pre>
                                                                         </td>
-                                                                        <td>{tc.points}</td>
-                                                                        <td>
-                                                                            <div className="d-flex gap-1">
-                                                                                <button onClick={() => openEditTestCaseModal(tc)} type="button" className="btn btn-sm btn-outline-warning rounded-circle" title="Edit Test Case" style={{ width: '30px', height: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                                                                    <SquarePen size={14} />
+                                                                        <td style={{ border: '1px solid #2dd4bf' }}>
+                                                                            <pre className="mb-0 small p-2 rounded" style={{ 
+                                                                                backgroundColor: '#0f1922', 
+                                                                                border: '2px solid #22d3ee', 
+                                                                                color: '#a5f3fc', 
+                                                                                maxWidth: '200px', 
+                                                                                overflow: 'auto',
+                                                                                boxShadow: '0 2px 8px rgba(34, 211, 238, 0.3)'
+                                                                            }}>{tc.output}</pre>
+                                                                        </td>
+                                                                        <td style={{ textAlign: 'center', border: '1px solid #2dd4bf' }}>
+                                                                            {tc.isHidden ? (
+                                                                                <span className="badge rounded-pill px-3 py-2" style={{ backgroundColor: '#dc2626', color: '#fff', boxShadow: '0 2px 8px rgba(220, 38, 38, 0.4)' }}>
+                                                                                    <XCircle size={16} className="me-1" /> Hidden
+                                                                                </span>
+                                                                            ) : (
+                                                                                <span className="badge rounded-pill px-3 py-2" style={{ backgroundColor: '#059669', color: '#fff', boxShadow: '0 2px 8px rgba(5, 150, 105, 0.4)' }}>
+                                                                                    <CheckCircle size={16} className="me-1" /> Visible
+                                                                                </span>
+                                                                            )}
+                                                                        </td>
+                                                                        <td style={{ color: '#fbbf24', fontWeight: 'bold', fontSize: '1rem', border: '1px solid #2dd4bf' }}>
+                                                                            <span className="badge rounded-pill px-3 py-2" style={{ backgroundColor: '#d97706', color: '#fff', boxShadow: '0 2px 8px rgba(217, 119, 6, 0.4)' }}>
+                                                                                {tc.points} pts
+                                                                            </span>
+                                                                        </td>
+                                                                        <td style={{ border: '1px solid #2dd4bf' }}>
+                                                                            <div className="d-flex gap-2 justify-content-center">
+                                                                                <button onClick={() => openEditTestCaseModal(tc)} type="button" 
+                                                                                    className="btn btn-sm rounded-pill px-3 py-2" 
+                                                                                    title="Edit Test Case" 
+                                                                                    style={{ 
+                                                                                        backgroundColor: '#f59e0b', 
+                                                                                        border: '2px solid #fbbf24', 
+                                                                                        color: '#0a0e27',
+                                                                                        fontWeight: 'bold',
+                                                                                        transition: 'all 0.3s ease',
+                                                                                        boxShadow: '0 2px 8px rgba(245, 158, 11, 0.4)'
+                                                                                    }}
+                                                                                    onMouseEnter={(e) => {
+                                                                                        e.target.style.backgroundColor = '#fbbf24';
+                                                                                        e.target.style.transform = 'scale(1.1)';
+                                                                                    }}
+                                                                                    onMouseLeave={(e) => {
+                                                                                        e.target.style.backgroundColor = '#f59e0b';
+                                                                                        e.target.style.transform = 'scale(1)';
+                                                                                    }}
+                                                                                >
+                                                                                    <SquarePen size={14} className="me-1" /> Edit
                                                                                 </button>
-                                                                                <button onClick={() => handleDeleteTestCase(tc._id)} type="button" className="btn btn-sm btn-outline-danger rounded-circle" title="Delete Test Case" style={{ width: '30px', height: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                                                                    <Trash size={14} />
+                                                                                <button onClick={() => handleDeleteTestCase(tc._id)} type="button" 
+                                                                                    className="btn btn-sm rounded-pill px-3 py-2" 
+                                                                                    title="Delete Test Case" 
+                                                                                    style={{ 
+                                                                                        backgroundColor: '#dc2626', 
+                                                                                        border: '2px solid #ef4444', 
+                                                                                        color: '#fff',
+                                                                                        fontWeight: 'bold',
+                                                                                        transition: 'all 0.3s ease',
+                                                                                        boxShadow: '0 2px 8px rgba(220, 38, 38, 0.4)'
+                                                                                    }}
+                                                                                    onMouseEnter={(e) => {
+                                                                                        e.target.style.backgroundColor = '#ef4444';
+                                                                                        e.target.style.transform = 'scale(1.1)';
+                                                                                    }}
+                                                                                    onMouseLeave={(e) => {
+                                                                                        e.target.style.backgroundColor = '#dc2626';
+                                                                                        e.target.style.transform = 'scale(1)';
+                                                                                    }}
+                                                                                >
+                                                                                    <Trash size={14} className="me-1" /> Delete
                                                                                 </button>
                                                                             </div>
                                                                         </td>
@@ -524,11 +676,11 @@ function AdminProblemPanel({ userRole, isAuthenticated, onLogout, onSolveProblem
                                             </div>
                                         )}
                                     </div>
-                                    <div className="modal-footer justify-content-center border-top-0 pt-0">
+                                    <div className="modal-footer justify-content-center border-top-0 pt-0 position-sticky bottom-0" style={{ backgroundColor: '#2c3e50', borderTop: '1px solid #4a5568', zIndex: 10 }}>
                                         <button type="button" onClick={closeAllModals} className="btn btn-secondary btn-lg rounded-pill px-4">
                                             Cancel
                                         </button>
-                                        <button type="submit" className="btn btn-primary-gradient btn-lg rounded-pill px-4 fw-bold">
+                                        <button type="submit" className="btn btn-primary btn-lg rounded-pill px-4 fw-bold" style={{ backgroundColor: '#3182ce', borderColor: '#3182ce' }}>
                                             {formMode === 'create' ? 'Create Problem' : 'Update Problem'}
                                         </button>
                                     </div>
@@ -538,43 +690,83 @@ function AdminProblemPanel({ userRole, isAuthenticated, onLogout, onSolveProblem
                     </div>
                 )}
 
-                {/* Test Case Create/Edit Modal (NEW) */}
+                {/* Test Case Create/Edit Modal (SEPARATE MODAL) - FIXED STYLING AND Z-INDEX */}
                 {isTestCaseModalOpen && isAdmin && currentProblem && (
-                    <div className="modal d-block fade show" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.8)' }}>
-                        <div className="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-                            <div className="modal-content card-themed shadow-lg rounded-4 border-secondary">
-                                <div className="modal-header bg-dark text-white rounded-top-4 border-secondary">
-                                    <h5 className="modal-title fw-bold" style={{ color: 'var(--success-accent)' }}>
+                    <div className="modal d-block fade show" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.95)', zIndex: 1060 }}>
+                        <div className="modal-dialog modal-lg modal-dialog-centered">
+                            <div className="modal-content" style={{ backgroundColor: '#2c3e50', color: '#fff', border: '1px solid #4a5568', maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
+                                <div className="modal-header" style={{ backgroundColor: '#1a202c', borderBottom: '1px solid #4a5568', flexShrink: 0 }}>
+                                    <h5 className="modal-title fw-bold" style={{ color: '#48bb78' }}>
                                         {testCaseFormMode === 'create' ? 'Add New Test Case' : 'Edit Test Case'} for "{currentProblem.title}"
                                     </h5>
                                     <button type="button" className="btn-close btn-close-white" onClick={() => setIsTestCaseModalOpen(false)} aria-label="Close"></button>
                                 </div>
-                                <form onSubmit={handleTestCaseSubmit}>
-                                    <div className="modal-body row g-3 p-4">
+                                <form onSubmit={handleTestCaseSubmit} style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                                    <div className="modal-body row g-3 p-4" style={{ backgroundColor: '#2c3e50', overflowY: 'auto', flex: 1 }}>
                                         <div className="col-12">
-                                            <label htmlFor="testCaseInput" className="form-label text-light fw-semibold">Input</label>
-                                            <textarea id="testCaseInput" value={testCaseInput} onChange={(e) => setTestCaseInput(e.target.value)} className="form-control form-control-themed rounded-3" required rows="5"></textarea>
+                                            <label htmlFor="testCaseInput" className="form-label fw-semibold" style={{ color: '#e2e8f0' }}>Input</label>
+                                            <textarea 
+                                                id="testCaseInput" 
+                                                value={testCaseInput} 
+                                                onChange={(e) => setTestCaseInput(e.target.value)} 
+                                                className="form-control rounded-3" 
+                                                style={{ backgroundColor: '#1a202c', color: '#fff', border: '1px solid #4a5568', resize: 'vertical', minHeight: '120px' }}
+                                                required 
+                                                rows="5"
+                                                placeholder="Enter the input for this test case..."
+                                            ></textarea>
                                         </div>
                                         <div className="col-12">
-                                            <label htmlFor="testCaseOutput" className="form-label text-light fw-semibold">Output</label>
-                                            <textarea id="testCaseOutput" value={testCaseOutput} onChange={(e) => setTestCaseOutput(e.target.value)} className="form-control form-control-themed rounded-3" required rows="5"></textarea>
+                                            <label htmlFor="testCaseOutput" className="form-label fw-semibold" style={{ color: '#e2e8f0' }}>Expected Output</label>
+                                            <textarea 
+                                                id="testCaseOutput" 
+                                                value={testCaseOutput} 
+                                                onChange={(e) => setTestCaseOutput(e.target.value)} 
+                                                className="form-control rounded-3" 
+                                                style={{ backgroundColor: '#1a202c', color: '#fff', border: '1px solid #4a5568', resize: 'vertical', minHeight: '120px' }}
+                                                required 
+                                                rows="5"
+                                                placeholder="Enter the expected output for this test case..."
+                                            ></textarea>
                                         </div>
                                         <div className="col-md-6">
-                                            <label htmlFor="testCasePoints" className="form-label text-light fw-semibold">Points</label>
-                                            <input type="number" id="testCasePoints" value={testCasePoints} onChange={(e) => setTestCasePoints(e.target.value)} className="form-control form-control-themed rounded-pill" required min="0" />
+                                            <label htmlFor="testCasePoints" className="form-label fw-semibold" style={{ color: '#e2e8f0' }}>Points</label>
+                                            <input 
+                                                type="number" 
+                                                id="testCasePoints" 
+                                                value={testCasePoints} 
+                                                onChange={(e) => setTestCasePoints(e.target.value)} 
+                                                className="form-control form-control-lg rounded-pill" 
+                                                style={{ backgroundColor: '#1a202c', color: '#fff', border: '1px solid #4a5568' }}
+                                                required 
+                                                min="0" 
+                                                placeholder="0"
+                                            />
                                         </div>
-                                        <div className="col-md-6 d-flex align-items-center">
-                                            <div className="form-check form-switch mt-4">
-                                                <input className="form-check-input" type="checkbox" id="testCaseIsHidden" checked={testCaseIsHidden} onChange={(e) => setTestCaseIsHidden(e.target.checked)} />
-                                                <label className="form-check-label text-light fw-semibold" htmlFor="testCaseIsHidden">Hidden Test Case</label>
+                                        <div className="col-md-6 d-flex align-items-end">
+                                            <div className="form-check form-switch">
+                                                <input 
+                                                    className="form-check-input" 
+                                                    type="checkbox" 
+                                                    id="testCaseIsHidden" 
+                                                    checked={testCaseIsHidden} 
+                                                    onChange={(e) => setTestCaseIsHidden(e.target.checked)} 
+                                                    style={{ transform: 'scale(1.2)' }}
+                                                />
+                                                <label className="form-check-label fw-semibold ms-2" htmlFor="testCaseIsHidden" style={{ color: '#e2e8f0' }}>
+                                                    Hidden Test Case
+                                                </label>
+                                                <div className="form-text" style={{ color: '#a0aec0', fontSize: '0.875rem' }}>
+                                                    Hidden test cases are not visible to students during submission
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="modal-footer justify-content-center border-top-0 pt-0">
+                                    <div className="modal-footer justify-content-center border-top-0 pt-0" style={{ backgroundColor: '#2c3e50', borderTop: '1px solid #4a5568', flexShrink: 0 }}>
                                         <button type="button" onClick={() => setIsTestCaseModalOpen(false)} className="btn btn-secondary btn-lg rounded-pill px-4">
                                             Cancel
                                         </button>
-                                        <button type="submit" className="btn btn-success-gradient btn-lg rounded-pill px-4 fw-bold">
+                                        <button type="submit" className="btn btn-success btn-lg rounded-pill px-4 fw-bold" style={{ backgroundColor: '#38a169', borderColor: '#38a169' }}>
                                             {testCaseFormMode === 'create' ? 'Add Test Case' : 'Update Test Case'}
                                         </button>
                                     </div>
@@ -585,19 +777,19 @@ function AdminProblemPanel({ userRole, isAuthenticated, onLogout, onSolveProblem
                 )}
 
 
-                {/* Problem View Modal (Accessible by both Admin and User) */}
+                {/* Problem View Modal (Accessible by both Admin and User) - FIXED STYLING */}
                 {isViewModalOpen && currentProblem && (
-                    <div className="modal d-block fade show" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.8)' }}>
+                    <div className="modal d-block fade show" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.9)', zIndex: 1050 }}>
                         <div className="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-                            <div className="modal-content card-themed shadow-lg rounded-4 border-secondary">
-                                <div className="modal-header bg-dark text-white rounded-top-4 border-secondary">
-                                    <h5 className="modal-title fw-bold" style={{ color: 'var(--primary-accent)' }}>{currentProblem.title}</h5>
+                            <div className="modal-content" style={{ backgroundColor: '#2c3e50', color: '#fff', border: '1px solid #4a5568' }}>
+                                <div className="modal-header" style={{ backgroundColor: '#1a202c', borderBottom: '1px solid #4a5568' }}>
+                                    <h5 className="modal-title fw-bold" style={{ color: '#63b3ed' }}>{currentProblem.title}</h5>
                                     <button type="button" className="btn-close btn-close-white" onClick={closeAllModals} aria-label="Close"></button>
                                 </div>
-                                <div className="modal-body p-4" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+                                <div className="modal-body p-4" style={{ maxHeight: '70vh', overflowY: 'auto', backgroundColor: '#2c3e50' }}>
                                     <div className="row mb-3">
                                         <div className="col-md-4">
-                                            <p className="mb-1 text"><strong>Difficulty:</strong></p>
+                                            <p className="mb-1" style={{ color: '#e2e8f0' }}><strong>Difficulty:</strong></p>
                                             <span className={`badge rounded-pill ${
                                                 currentProblem.difficulty === 'Easy' ? 'bg-success' :
                                                 currentProblem.difficulty === 'Medium' ? 'bg-warning text-dark' :
@@ -607,36 +799,37 @@ function AdminProblemPanel({ userRole, isAuthenticated, onLogout, onSolveProblem
                                             </span>
                                         </div>
                                         <div className="col-md-4">
-                                            <p className="mb-1 text"><strong>Time Limit:</strong></p>
-                                            <span className="fw-bold text-info">{currentProblem.timeLimit}</span> seconds
+                                            <p className="mb-1" style={{ color: '#e2e8f0' }}><strong>Time Limit:</strong></p>
+                                            <span className="fw-bold" style={{ color: '#63b3ed' }}>{currentProblem.timeLimit}</span> seconds
                                         </div>
                                         <div className="col-md-4">
-                                            <p className="mb-1 text"><strong>Memory Limit:</strong></p>
-                                            <span className="fw-bold text-info">{currentProblem.memoryLimit}</span> MB
+                                            <p className="mb-1" style={{ color: '#e2e8f0' }}><strong>Memory Limit:</strong></p>
+                                            <span className="fw-bold" style={{ color: '#63b3ed' }}>{currentProblem.memoryLimit}</span> MB
                                         </div>
                                     </div>
-                                    <p className="mb-3 text"><strong>Tags:</strong> {currentProblem.tags.length > 0 ? (
+                                    <p className="mb-3" style={{ color: '#e2e8f0' }}><strong>Tags:</strong> {currentProblem.tags.length > 0 ? (
                                         currentProblem.tags.map((tag, index) => (
                                             <span key={index} className="badge bg-info text-dark me-1 rounded-pill"><Tag size={12} className="me-1" />{tag}</span>
                                         ))
                                     ) : (
                                         <span className="fst-italic">None</span>
                                     )}</p>
-                                    <hr className="my-4 border-secondary" />
-                                    <h6 className="mt-3 fw-bold text-info">Problem Statement:</h6>
-                                    <pre className="bg-dark p-3 rounded border border-secondary text-light fs-6">{currentProblem.statement}</pre>
-                                    <h6 className="mt-4 fw-bold text-info">Input Format:</h6>
-                                    <pre className="bg-dark p-3 rounded border border-secondary text-light fs-6">{currentProblem.input}</pre>
-                                    <h6 className="mt-4 fw-bold text-info">Output Format:</h6>
-                                    <pre className="bg-dark p-3 rounded border border-secondary text-light fs-6">{currentProblem.output}</pre>
-                                    <h6 className="mt-4 fw-bold text-info">Constraints:</h6>
-                                    <pre className="bg-dark p-3 rounded border border-secondary text-light fs-6">{currentProblem.constraints}</pre>
+                                    <hr className="my-4" style={{ borderColor: '#4a5568' }} />
+                                    <h6 className="mt-3 fw-bold" style={{ color: '#63b3ed' }}>Problem Statement:</h6>
+                                    <pre className="p-3 rounded fs-6" style={{ backgroundColor: '#1a202c', border: '1px solid #4a5568', color: '#e2e8f0' }}>{currentProblem.statement}</pre>
+                                    <h6 className="mt-4 fw-bold" style={{ color: '#63b3ed' }}>Input Format:</h6>
+                                    <pre className="p-3 rounded fs-6" style={{ backgroundColor: '#1a202c', border: '1px solid #4a5568', color: '#e2e8f0' }}>{currentProblem.input}</pre>
+                                    <h6 className="mt-4 fw-bold" style={{ color: '#63b3ed' }}>Output Format:</h6>
+                                    <pre className="p-3 rounded fs-6" style={{ backgroundColor: '#1a202c', border: '1px solid #4a5568', color: '#e2e8f0' }}>{currentProblem.output}</pre>
+                                    <h6 className="mt-4 fw-bold" style={{ color: '#63b3ed' }}>Constraints:</h6>
+                                    <pre className="p-3 rounded fs-6" style={{ backgroundColor: '#1a202c', border: '1px solid #4a5568', color: '#e2e8f0' }}>{currentProblem.constraints}</pre>
                                 </div>
-                                <div className="modal-footer justify-content-center border-top-0 pt-0">
+                                <div className="modal-footer justify-content-center border-top-0 pt-0" style={{ backgroundColor: '#2c3e50', borderTop: '1px solid #4a5568' }}>
                                     <button
                                         type="button"
                                         onClick={closeAllModals}
-                                        className="btn btn-primary-gradient btn-lg rounded-pill px-4 fw-bold"
+                                        className="btn btn-primary btn-lg rounded-pill px-4 fw-bold"
+                                        style={{ backgroundColor: '#3182ce', borderColor: '#3182ce' }}
                                     >
                                         Close
                                     </button>
@@ -646,20 +839,20 @@ function AdminProblemPanel({ userRole, isAuthenticated, onLogout, onSolveProblem
                     </div>
                 )}
 
-                {/* Custom Confirmation Modal for Deletion (Admin Only) */}
+                {/* Custom Confirmation Modal for Deletion (Admin Only) - FIXED STYLING */}
                 {isConfirmModalOpen && isAdmin && (
-                    <div className="modal d-block fade show" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.8)' }}>
+                    <div className="modal d-block fade show" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.9)', zIndex: 1050 }}>
                         <div className="modal-dialog modal-sm modal-dialog-centered">
-                            <div className="modal-content card-themed shadow-lg rounded-3 border-secondary">
-                                <div className="modal-header bg-dark text-white rounded-top-3 border-secondary">
+                            <div className="modal-content" style={{ backgroundColor: '#2c3e50', color: '#fff', border: '1px solid #4a5568' }}>
+                                <div className="modal-header" style={{ backgroundColor: '#1a202c', borderBottom: '1px solid #4a5568' }}>
                                     <h5 className="modal-title fw-bold text-danger">Confirm Deletion</h5>
                                     <button type="button" className="btn-close btn-close-white" onClick={closeAllModals} aria-label="Close"></button>
                                 </div>
-                                <div className="modal-body text-center p-4">
-                                    <p className="mb-4 fs-5 text-light">Are you sure you want to delete this problem?</p>
+                                <div className="modal-body text-center p-4" style={{ backgroundColor: '#2c3e50' }}>
+                                    <p className="mb-4 fs-5" style={{ color: '#e2e8f0' }}>Are you sure you want to delete this problem?</p>
                                     <p className="text-danger fw-bold">This action cannot be undone.</p>
                                 </div>
-                                <div className="modal-footer justify-content-center border-top-0 pt-0">
+                                <div className="modal-footer justify-content-center border-top-0 pt-0" style={{ backgroundColor: '#2c3e50', borderTop: '1px solid #4a5568' }}>
                                     <button
                                         type="button"
                                         onClick={closeAllModals}
@@ -685,4 +878,4 @@ function AdminProblemPanel({ userRole, isAuthenticated, onLogout, onSolveProblem
     }
 
 
-export default AdminProblemPanel; // FIX: Added export default
+export default AdminProblemPanel;

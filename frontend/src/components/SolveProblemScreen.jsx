@@ -4,6 +4,7 @@ import {
     XCircle, Code, Send, Play, CheckCircle2, AlertTriangle, Clock, MemoryStick, Zap
 } from 'lucide-react';
 import CodeMirror from '@uiw/react-codemirror';
+// Updated imports for CodeMirror language extensions
 import { cpp } from '@codemirror/lang-cpp';
 import { java } from '@codemirror/lang-java';
 import { python } from '@codemirror/lang-python';
@@ -36,6 +37,7 @@ function SolveProblemScreen({ problem, onClose, isAuthenticated }) {
     const [testResults, setTestResults] = useState([]);
     const [sampleTestCases, setSampleTestCases] = useState([]);
     const [currentTestCaseIndex, setCurrentTestCaseIndex] = useState(0);
+    const [isDraftLoaded, setIsDraftLoaded] = useState(false);
 
     // State for AI review content and loading status
     const [aiReviewContent, setAiReviewContent] = useState('');
@@ -85,9 +87,13 @@ function SolveProblemScreen({ problem, onClose, isAuthenticated }) {
         }
     }, 1000), [isAuthenticated]);
 
+    // Load draft when component mounts
     useEffect(() => {
         const loadDraft = async () => {
-            if (!isAuthenticated || !problem || !problem._id) return;
+            if (!isAuthenticated || !problem || !problem._id) {
+                setIsDraftLoaded(true);
+                return;
+            }
             try {
                 const token = localStorage.getItem('token');
                 const config = { headers: { Authorization: `Bearer ${token}` } };
@@ -105,34 +111,37 @@ function SolveProblemScreen({ problem, onClose, isAuthenticated }) {
                 if (problem.boilerplateCode && problem.boilerplateCode[language]) {
                     setCode(problem.boilerplateCode[language]);
                 }
+            } finally {
+                setIsDraftLoaded(true);
             }
         };
         loadDraft();
-    }, [isAuthenticated, problem, language]);
+    }, [isAuthenticated, problem]);
 
+    // Save draft whenever code or language changes (after initial load)
     useEffect(() => {
-        if (isAuthenticated && problem && problem._id && (code !== '' || language !== 'cpp')) {
+        if (isAuthenticated && problem && problem._id && isDraftLoaded && (code !== '' || language !== 'cpp')) {
             saveDraft(code, language, problem._id);
         }
-    }, [code, language, problem, isAuthenticated, saveDraft]);
+    }, [code, language, problem, isAuthenticated, saveDraft, isDraftLoaded]);
 
-    // Load boilerplate code when language changes or when no code exists
+    // Load boilerplate code when language changes (only after draft is loaded)
     useEffect(() => {
+        if (!isDraftLoaded) return; // Don't run until draft is loaded
+        
         if (problem && problem.boilerplateCode && problem.boilerplateCode[language]) {
-            // Load boilerplate if no code exists or if user wants to reset
-            if (!code || code.trim() === '') {
-                setCode(problem.boilerplateCode[language]);
-            }
+            setCode(problem.boilerplateCode[language]);
         }
-    }, [language, problem]);
+    }, [language, problem, isDraftLoaded]);
 
     // --- Event Handlers ---
     const handleLanguageChange = (newLanguage) => {
         setLanguage(newLanguage);
-        // Load boilerplate code for the new language
-        if (problem && problem.boilerplateCode && problem.boilerplateCode[newLanguage]) {
-            setCode(problem.boilerplateCode[newLanguage]);
-        }
+        // Clear any existing output when switching languages
+        setCompileMessage('');
+        setOutputStdout('');
+        setTestResults([]);
+        setSubmissionMessage('');
     };
 
     const handleRunCode = async () => {
@@ -270,36 +279,31 @@ function SolveProblemScreen({ problem, onClose, isAuthenticated }) {
         }
     };
 
-    // --- AI Integration Logic (Updated) ---
+    // --- AI Integration Logic ---
     const handleGetAIReview = async () => {
         setAiReviewContent('');
         setIsAIRunning(true);
-        setActiveTab('aiReview'); // Switch to AI Review tab
+        setActiveTab('aiReview');
 
-        // The payload now contains the code, language, and problem context
         const reviewData = {
             userCode: code,
             language: language,
-            problemId: problem?._id, // Include problem ID for context
+            problemId: problem?._id,
         };
 
         try {
-            // Get the authentication token
             const token = localStorage.getItem('token');
             if (!token) {
                 throw new Error('No authentication token found. Please login again.');
             }
 
-            // Call your backend's API endpoint with authentication
             const response = await axios.post(AI_REVIEW_API_URL, reviewData, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             
-            // Your backend returns a JSON object with a 'review' key
             if (response.data && response.data.review) {
                 setAiReviewContent(response.data.review);
                 
-                // Show additional message if it's a mock review
                 if (response.data.isMock) {
                     console.log('Mock AI review generated. Add your Google Gemini API key for real reviews.');
                 }
@@ -309,7 +313,6 @@ function SolveProblemScreen({ problem, onClose, isAuthenticated }) {
         } catch (error) {
             console.error('Error fetching AI review from backend:', error);
             
-            // Handle specific error cases
             if (error.response?.status === 401) {
                 setAiReviewContent('Error: Authentication failed. Please login again.');
             } else if (error.response?.status === 400 && error.response?.data?.error === 'Missing API key') {
@@ -319,7 +322,6 @@ function SolveProblemScreen({ problem, onClose, isAuthenticated }) {
             } else if (error.response?.status === 408) {
                 setAiReviewContent('Error: Request timeout. The AI service is taking too long to respond.');
             } else {
-                // Display the error message from the backend, or a generic one
                 const errorMessage = error.response?.data?.message || 'Failed to get AI review. Please try again.';
                 setAiReviewContent(`Error: ${errorMessage}`);
             }
@@ -328,21 +330,50 @@ function SolveProblemScreen({ problem, onClose, isAuthenticated }) {
         }
     };
 
-    const getLanguageExtension = (lang) => {
-        switch (lang) {
-            case 'cpp': return cpp();
-            case 'java': return java();
-            case 'python': return python();
-            default: return cpp();
+    // Dynamic language extension loading
+    const getLanguageExtension = async (lang) => {
+        console.log(`Loading language extension for: ${lang}`);
+        
+        try {
+            switch (lang) {
+                case 'cpp':
+                case 'c++':
+                    const { cpp } = await import('@codemirror/lang-cpp');
+                    return cpp();
+                case 'java':
+                    const { java } = await import('@codemirror/lang-java');
+                    return java();
+                case 'python':
+                case 'py':
+                    const { python } = await import('@codemirror/lang-python');
+                    return python();
+                default:
+                    console.warn(`Unknown language: ${lang}, using no extension`);
+                    return [];
+            }
+        } catch (error) {
+            console.error(`Failed to load language extension for ${lang}:`, error);
+            return [];
         }
     };
+
+    // State to hold the current language extension
+    const [currentExtension, setCurrentExtension] = useState([]);
+
+    // Load extension when language changes
+    useEffect(() => {
+        const loadExtension = async () => {
+            const extension = await getLanguageExtension(language);
+            setCurrentExtension(extension);
+        };
+        loadExtension();
+    }, [language]);
 
     const currentSampleInput = sampleTestCases.length > 0 ? sampleTestCases[currentTestCaseIndex]?.input : "No sample input available.";
 
     return (
         <>
             <style>{`
-                /* Your existing CSS styles... (no changes needed here) */
                 :root {
                     --dark-bg: #1a1a1a;
                     --dark-bg-lighter: #2c2c2c;
@@ -427,7 +458,6 @@ function SolveProblemScreen({ problem, onClose, isAuthenticated }) {
                 .test-case-btn:not(.active) { background-color: var(--dark-bg-lighter); color: var(--text-muted); }
             `}</style>
             
-            {/* Your existing JSX (no changes needed here) */}
             <div className="bg-dark min-vh-100 py-4 text-white">
                 <div className="container-fluid px-4">
                     <header className="pb-3 mb-3 d-flex justify-content-between align-items-center">
@@ -486,7 +516,7 @@ function SolveProblemScreen({ problem, onClose, isAuthenticated }) {
                                         onChange={(e) => handleLanguageChange(e.target.value)}
                                         style={{ width: 'auto', backgroundColor: '#3a3a3a', color: 'white', border: '1px solid #555' }}
                                     >
-                                        <option value="cpp">C++</option>
+                                        {/* <option value="cpp">C++</option> */}
                                         <option value="java">Java</option>
                                         <option value="python">Python</option>
                                     </select>
@@ -495,7 +525,7 @@ function SolveProblemScreen({ problem, onClose, isAuthenticated }) {
                                     <CodeMirror
                                         value={code}
                                         theme={okaidia}
-                                        extensions={[getLanguageExtension(language)]}
+                                        extensions={currentExtension ? [currentExtension] : []}
                                         onChange={(value) => setCode(value)}
                                         height="100%"
                                         style={{height: '100%'}}

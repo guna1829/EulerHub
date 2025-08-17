@@ -150,9 +150,9 @@ function AuthScreen({ onLogin, onRegister, message }) {
                                             <h3 className="h4 fw-bold mb-3" style={{ color: 'var(--text-primary)' }}>
                                                 User Login
                                             </h3>
-                                            <p className="text-muted mb-0" style={{ color: 'var(--text-secondary)' }}>
+                                            {/* <p className="text-muted mb-0" style={{ color: 'var(--text-secondary)' }}>
                                                 Access problems, submit solutions, and track your progress
-                                            </p>
+                                            </p> */}
                                         </div>
                                     </div>
                                 </div>
@@ -183,9 +183,9 @@ function AuthScreen({ onLogin, onRegister, message }) {
                                             <h3 className="h4 fw-bold mb-3" style={{ color: 'var(--text-primary)' }}>
                                                 Admin Access
                                             </h3>
-                                            <p className="text-muted mb-0" style={{ color: 'var(--text-secondary)' }}>
+                                            {/* <p className="text-muted mb-0" style={{ color: 'var(--text-secondary)' }}>
                                                 Manage problems, contests, and platform administration
-                                            </p>
+                                            </p> */}
                                         </div>
                                     </div>
                                 </div>
@@ -246,9 +246,9 @@ function AuthScreen({ onLogin, onRegister, message }) {
                                     <h2 className="h3 fw-bold mb-2" style={{ color: 'var(--text-primary)' }}>
                                         {isLoginMode ? 'Welcome Back' : 'Join EulerHub'}
                                     </h2>
-                                    <p className="text-muted" style={{ color: 'var(--text-secondary)' }}>
+                                    {/* <p className="text-muted" style={{  color: "#d1d5db" }}>
                                         {isLoginMode ? 'Sign in to continue your journey' : 'Start your problem-solving adventure'}
-                                    </p>
+                                    </p> */}
                                 </div>
 
                                 {currentAuthMessage && (
@@ -276,6 +276,7 @@ function AuthScreen({ onLogin, onRegister, message }) {
                                             <input
                                                 type="text"
                                                 className="form-control form-control-modern"
+                                                style={{ color: "white" }}
                                                 value={name}
                                                 onChange={(e) => setName(e.target.value)}
                                                 placeholder="Enter your full name"
@@ -291,6 +292,7 @@ function AuthScreen({ onLogin, onRegister, message }) {
                                         <input
                                             type="email"
                                             className="form-control form-control-modern"
+                                            style={{ color: "white" }} 
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
                                             placeholder="Enter your email"
@@ -305,6 +307,7 @@ function AuthScreen({ onLogin, onRegister, message }) {
                                         <input
                                             type="password"
                                             className="form-control form-control-modern"
+                                            style={{ color: "white" }} 
                                             value={password}
                                             onChange={(e) => setPassword(e.target.value)}
                                             placeholder="Enter your password"

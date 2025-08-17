@@ -134,9 +134,9 @@ function Navbar({ isAuthenticated, userRole, onLogout, onNavigate, toggleTheme, 
                         )}
                     </ul>
                     
-                    <div className="d-flex align-items-center">
+                    <div className="d-flex align-items-center" style={{ gap: '0.5rem' }}>
                         {isAuthenticated && (
-                            <div className="badge me-3 p-3 rounded-3 d-flex align-items-center position-relative"
+                            <div className="badge d-flex align-items-center position-relative"
                                  style={{
                                      background: isAdmin 
                                          ? 'linear-gradient(135deg, #06b6d4, #0891b2)' 
@@ -147,26 +147,33 @@ function Navbar({ isAuthenticated, userRole, onLogout, onNavigate, toggleTheme, 
                                      boxShadow: isAdmin 
                                          ? '0 0 20px rgba(6, 182, 212, 0.3)' 
                                          : '0 0 20px rgba(139, 92, 246, 0.3)',
-                                     fontSize: '0.85rem',
+                                     fontSize: '0.75rem',
                                      fontWeight: '600',
                                      letterSpacing: '0.5px',
                                      color: 'white',
-                                     animation: isAdmin ? 'pulse-admin 2s infinite' : 'none'
+                                     animation: isAdmin ? 'pulse-admin 2s infinite' : 'none',
+                                     whiteSpace: 'nowrap',
+                                     padding: '0.4rem 0.6rem',
+                                     borderRadius: '0.5rem',
+                                     flexShrink: 0,
+                                     minWidth: 'fit-content'
                                  }}>
                                 {isAdmin ? (
-                                    <Shield size={18} className="me-2" style={{ filter: 'drop-shadow(0 0 3px rgba(255,255,255,0.5))' }} />
+                                    <Shield size={14} className="me-1" style={{ filter: 'drop-shadow(0 0 3px rgba(255,255,255,0.5))' }} />
                                 ) : (
-                                    <UserIcon size={18} className="me-2" />
+                                    <UserIcon size={14} className="me-1" />
                                 )}
-                                <span>{userRole.toUpperCase()}</span>
+                                <span className="d-none d-sm-inline">{userRole.toUpperCase()}</span>
+                                <span className="d-inline d-sm-none">{userRole.charAt(0)}</span>
                             </div>
                         )}
                         
                         <button onClick={toggleTheme} 
-                                className="btn btn-outline-light rounded-3 me-3 theme-toggle" 
+                                className="btn btn-outline-light rounded-3 theme-toggle" 
                                 style={{ 
-                                    width: '48px', 
-                                    height: '48px', 
+                                    width: '40px', 
+                                    height: '40px', 
+                                    minWidth: '40px',
                                     display: 'flex', 
                                     alignItems: 'center', 
                                     justifyContent: 'center',
@@ -176,19 +183,21 @@ function Navbar({ isAuthenticated, userRole, onLogout, onNavigate, toggleTheme, 
                                     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                                     position: 'relative',
                                     overflow: 'hidden',
-                                    color: 'var(--text-primary)'
+                                    color: 'var(--text-primary)',
+                                    flexShrink: 0,
+                                    padding: '0'
                                 }}>
                             <div style={{ 
                                 transition: 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
                                 transform: isDarkMode ? 'rotate(360deg)' : 'rotate(0deg)'
                             }}>
-                                {isDarkMode ? <Sun size={22} /> : <Moon size={22} />}
+                                {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
                             </div>
                         </button>
                         
                         {isAuthenticated ? (
                             <button onClick={onLogout} 
-                                    className="btn btn-outline-danger d-flex align-items-center rounded-3 px-4 py-3 logout-btn"
+                                    className="btn btn-outline-danger d-flex align-items-center rounded-3 logout-btn"
                                     style={{
                                         border: '1px solid #ef4444',
                                         background: 'rgba(239, 68, 68, 0.05)',
@@ -197,14 +206,19 @@ function Navbar({ isAuthenticated, userRole, onLogout, onNavigate, toggleTheme, 
                                         fontWeight: '600',
                                         position: 'relative',
                                         overflow: 'hidden',
-                                        color: '#ef4444'
+                                        color: '#ef4444',
+                                        whiteSpace: 'nowrap',
+                                        flexShrink: 0,
+                                        padding: '0.5rem 0.75rem',
+                                        fontSize: '0.875rem',
+                                        height: '40px'
                                     }}>
-                                <LogOut size={18} className="me-2" /> 
-                                <span>Logout</span>
+                                <LogOut size={16} className="me-1" /> 
+                                <span className="d-none d-lg-inline">Logout</span>
                             </button>
                         ) : (
                             <button onClick={() => alert('Please implement actual navigation to login page or open login modal.')} 
-                                    className="btn btn-outline-success d-flex align-items-center rounded-3 px-4 py-3 login-btn"
+                                    className="btn btn-outline-success d-flex align-items-center rounded-3 login-btn"
                                     style={{
                                         border: '1px solid #10b981',
                                         background: 'rgba(16, 185, 129, 0.05)',
@@ -213,10 +227,15 @@ function Navbar({ isAuthenticated, userRole, onLogout, onNavigate, toggleTheme, 
                                         fontWeight: '600',
                                         position: 'relative',
                                         overflow: 'hidden',
-                                        color: '#10b981'
+                                        color: '#10b981',
+                                        whiteSpace: 'nowrap',
+                                        flexShrink: 0,
+                                        padding: '0.5rem 0.75rem',
+                                        fontSize: '0.875rem',
+                                        height: '40px'
                                     }}>
-                                <LogIn size={18} className="me-2" /> 
-                                <span>Login</span>
+                                <LogIn size={16} className="me-1" /> 
+                                <span className="d-none d-lg-inline">Login</span>
                             </button>
                         )}
                     </div>
@@ -301,7 +320,8 @@ function Navbar({ isAuthenticated, userRole, onLogout, onNavigate, toggleTheme, 
                 
                 @media (max-width: 991px) {
                     .nav-link-modern {
-                        margin: 0.5rem 0;
+                        margin: 0.25rem 0;
+                        padding: 0.75rem 1rem !important;
                     }
                     
                     .navbar-nav {
@@ -309,10 +329,35 @@ function Navbar({ isAuthenticated, userRole, onLogout, onNavigate, toggleTheme, 
                     }
                     
                     .d-flex.align-items-center {
-                        justify-content: space-between;
+                        justify-content: flex-start;
                         margin-top: 1rem;
                         padding-top: 1rem;
                         border-top: 1px solid rgba(101, 115, 255, 0.1);
+                        gap: 0.4rem !important;
+                    }
+                }
+                
+                @media (max-width: 576px) {
+                    .d-flex.align-items-center {
+                        gap: 0.3rem !important;
+                    }
+                    
+                    .logout-btn, .login-btn {
+                        padding: 0.4rem 0.6rem !important;
+                        font-size: 0.8rem !important;
+                        min-width: 36px !important;
+                        height: 36px !important;
+                    }
+                    
+                    .theme-toggle {
+                        width: 36px !important;
+                        height: 36px !important;
+                        min-width: 36px !important;
+                    }
+                    
+                    .badge {
+                        padding: 0.3rem 0.5rem !important;
+                        font-size: 0.7rem !important;
                     }
                 }
             `}</style>
